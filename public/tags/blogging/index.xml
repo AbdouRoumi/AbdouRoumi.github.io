@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blogging on E1b1g</title>
+    <link>http://localhost:1313/tags/blogging/</link>
+    <description>Recent content in Blogging on E1b1g</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 31 Jul 2024 12:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/blogging/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Welcome to E1b1g Blog - My Journey Begins</title>
+      <link>http://localhost:1313/posts/welcome-to-e1b1g-blog/</link>
+      <pubDate>Wed, 31 Jul 2024 12:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/welcome-to-e1b1g-blog/</guid>
+      <description>&lt;h1 id=&#34;welcome-to-e1b1g-blog-&#34;&gt;Welcome to E1b1g Blog! 🚀&lt;/h1&gt;&#xA;&lt;p&gt;Hey there! Welcome to my new blog. I&amp;rsquo;m excited to finally have a place to share my thoughts, projects, and discoveries in the world of technology.&lt;/p&gt;&#xA;&lt;h2 id=&#34;why-start-a-blog&#34;&gt;Why Start a Blog?&lt;/h2&gt;&#xA;&lt;p&gt;After years of learning, experimenting, and solving problems, I realized I wanted to:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Document my journey&lt;/strong&gt; - Keep track of what I learn and build&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Share knowledge&lt;/strong&gt; - Help others who might face similar challenges&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Build a community&lt;/strong&gt; - Connect with like-minded developers and enthusiasts&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Improve my writing&lt;/strong&gt; - Practice explaining complex concepts clearly&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;h2 id=&#34;what-to-expect&#34;&gt;What to Expect&lt;/h2&gt;&#xA;&lt;p&gt;This blog will be a mix of technical content and personal insights:&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

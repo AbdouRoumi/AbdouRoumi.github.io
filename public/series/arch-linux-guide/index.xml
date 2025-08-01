@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Arch Linux Guide on E1b1g</title>
+    <link>http://localhost:1313/series/arch-linux-guide/</link>
+    <description>Recent content in Arch Linux Guide on E1b1g</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 31 Jul 2024 14:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/series/arch-linux-guide/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Arch Linux Post-Install Essentials - My Must-Have Setup</title>
+      <link>http://localhost:1313/posts/arch-linux-post-install-essentials/</link>
+      <pubDate>Wed, 31 Jul 2024 14:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/arch-linux-post-install-essentials/</guid>
+      <description>&lt;h1 id=&#34;arch-linux-post-install-essentials&#34;&gt;Arch Linux Post-Install Essentials&lt;/h1&gt;&#xA;&lt;p&gt;Just finished a fresh Arch install? Here&amp;rsquo;s my go-to list of essential packages and configurations that transform a minimal Arch system into a productive development environment.&lt;/p&gt;&#xA;&lt;h2 id=&#34;system-updates--aur-helper&#34;&gt;System Updates &amp;amp; AUR Helper&lt;/h2&gt;&#xA;&lt;p&gt;First things first - update the system and get an AUR helper:&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Update system&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo pacman -Syu&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Install base development tools&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo pacman -S base-devel git&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# Install yay (AUR helper)&lt;/span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;git clone https://aur.archlinux.org/yay.git&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd yay&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;makepkg -si&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cd .. &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; rm -rf yay&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+    </item>
+  </channel>
+</rss>

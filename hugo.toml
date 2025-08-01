@@ -1,0 +1,37 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-us'
+title = 'E1b1g'
+theme = 'poison'
+pluralizelisttitles = false
+
+[pagination]
+pagerSize = 10
+
+[params]
+brand = "E1b1g"
+description = "E1b1g's personal blog"
+dark_mode = true
+front_page_content = ["posts"]
+
+
+# Social media links (uncomment and update the ones you want)
+email_url = "mailto:your-email@domain.com"
+github_url = "https://github.com/yourusername"
+twitter_url = "https://twitter.com/yourusername"
+linkedin_url = "https://linkedin.com/in/yourusername"
+discord_url = "https://discord.com/users/yourusername"
+
+# Menu configuration
+menu = [
+    {Name = "About", URL = "/about/", HasChildren = false},
+    {Name = "Posts", URL = "/posts/", Pre = "Recent", HasChildren = true, Limit = 5},
+]
+
+# RSS feed
+rss_icon = true
+rss_section = "posts"
+
+brand_image = "/images/image.jpg"
+[taxonomies]
+series = 'series'
+tags = 'tags'
