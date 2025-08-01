@@ -1,28 +1,46 @@
-baseURL = 'https://Abdouroumi.github.io/'
-languageCode = 'en-us'
-title = 'E1b1g'
-theme = 'poison'
-pluralizelisttitles = false
+name: Deploy Hugo site to Pages
 
-[pagination]
-pagerSize = 10
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
 
-[params]
-brand = "E1b1g"
-description = "E1b1g's personal blog"
-dark_mode = true
-front_page_content = ["posts"]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
-# Menu configuration
-menu = [
-    {Name = "About", URL = "/about/", HasChildren = false},
-    {Name = "Posts", URL = "/posts/", Pre = "Recent", HasChildren = true, Limit = 5},
-]
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
-# RSS feed
-rss_icon = true
-rss_section = "posts"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 'latest'
+          extended: true
+      - name: Build
+        run: hugo --minify
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: ./public
 
-[taxonomies]
-series = 'series'
-tags = 'tags'
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v3
