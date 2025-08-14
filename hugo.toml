@@ -15,11 +15,9 @@ front_page_content = ["posts"]
 
 
 # Social media links (uncomment and update the ones you want)
-email_url = "mailto:your-email@domain.com"
-github_url = "https://github.com/yourusername"
-twitter_url = "https://twitter.com/yourusername"
-linkedin_url = "https://linkedin.com/in/yourusername"
-discord_url = "https://discord.com/users/yourusername"
+email_url = "mailto:a_roumi@estin.dz"
+github_url = "https://github.com/Abdouroumi"
+linkedin_url = "https://www.linkedin.com/in/abdouroumi/"
 
 # Menu configuration
 menu = [
