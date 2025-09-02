@@ -3,7 +3,6 @@ title: "HTB Sherlock Analysis: Shelma Trojan - Complete Malware Reverse Engineer
 date: 2025-09-02T12:00:00Z
 draft: false
 tags: ["htb", "sherlock", "malware-analysis", "reverse-engineering", "trojan", "shelma", "ctf"]
-series: "HTB Writeups"
 description: "Deep dive analysis of the Shelma trojan from HackTheBox - complete static analysis, dynamic analysis, and behavioral examination with detailed reverse engineering techniques"
 ---
 
