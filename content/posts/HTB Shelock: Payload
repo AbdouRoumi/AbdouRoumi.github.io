@@ -1,0 +1,243 @@
+---
+title: "HTB Sherlock Analysis: Shelma Trojan - Complete Malware Reverse Engineering Walkthrough"
+date: 2025-09-02T12:00:00Z
+draft: false
+tags: ["htb", "sherlock", "malware-analysis", "reverse-engineering", "trojan", "shelma", "ctf"]
+series: "HTB Writeups"
+description: "Deep dive analysis of the Shelma trojan from HackTheBox - complete static analysis, dynamic analysis, and behavioral examination with detailed reverse engineering techniques"
+---
+
+# HTB Sherlock Analysis: Shelma Trojan - Complete Malware Reverse Engineering
+
+In this comprehensive writeup, I'll walk through my analysis of a Shelma trojan sample from HackTheBox's Sherlock challenges called Payload. This analysis demonstrates a methodical approach to malware reverse engineering using multiple techniques and tools.
+
+## Analysis Methodology
+
+For this malware analysis, I'll follow my standard three-part methodology that I typically use on wild samples:
+
+1. **Basic Static Analysis**
+2. **Basic Dynamic Analysis** (covered in behavioral section)
+3. **Advanced Static Analysis**
+4. **Behavioral Analysis**
+
+Let's dive into each section and uncover what this malware is really doing.
+
+## Initial Intelligence Gathering
+
+### VirusTotal Analysis
+
+First, I checked the malware's reputation on VirusTotal:
+
+The sample shows a high detection score on VT with a threat label of **trojan from the Shelma family**. This immediately tells us we're dealing with a known malicious family.
+
+### Threat Intelligence Research
+
+I researched the Shelma family to understand its capabilities:
+
+**Initial Research on Malpedia:**
+According to Malpedia, `win.doghousepower` (also aliased as Shelma) appeared to be a PyInstaller-based ransomware targeting web and database servers. However, this didn't match our sample's characteristics.
+
+**Further Research - NordVPN Cybersecurity Hub:**
+More relevant intelligence showed that **Shelma** is classified as a **Windows trojan** known for:
+- **Keylogging**
+- **Data exfiltration** 
+- **Remote device access**
+
+This profile matches much better with what we're analyzing! 🙂
+
+## 1. Basic Static Analysis
+
+### File Properties and Hashes
+
+From VirusTotal's basic properties, here are the key identifiers:
+
+**File Hashes:**
+- **MD5:** `a7b80b7f06c5d31c28a0f4da615d3c51`
+- **Imphash:** `49b7913bfffe47b34862d9152dc96809` (Hash of imported functions)
+- **SSDEEP:** `384:GU3Vuk8HN6W6Rt6ZgqPKMQmZS+f2IJ7wP:Gewk83g6ZgqgkxfL7w` (Fuzzy hashing for similarity detection)
+- **SHA-256:** `edd41b4a819f917f81203424730aaf0c24cc95e40acfc0f1bd90b11dadf58015`
+
+The malware shows a creation date of 2023 (though this is usually spoofed by malware authors).
+
+### PE Structure Analysis
+
+**Entropy Analysis:**
+![PE Section Analysis](images/pe-sections.png "PE sections showing normal entropy and Chi2 values")
+
+The PE sections show that the malware's entropy is not high and the Chi² value is normal, indicating the malware is **not packed**. This makes our static analysis much easier!
+
+**Using Detect It Easy:**
+![Detect It Easy Analysis](images/die-analysis.png "DIE showing base address and entry point")
+
+- **Base Address:** `0x140000000`
+- **Entry Point:** `0x140001125`
+
+### String Analysis
+
+Using string analysis tools (FLOSS can be very effective here), I discovered many functions commonly used in trojans, along with compiler information.
+
+**Key Observations:**
+- Multiple Windows API functions related to process manipulation
+- Evidence of dynamic function loading via `GetModuleHandleA`
+
+### Import Analysis
+
+The imports section reveals interesting behavior patterns:
+
+**GetModuleHandleA Usage:**
+According to Microsoft documentation, this function retrieves a handle to a specified module, suggesting the malware loads additional functions dynamically at runtime.
+
+*Side note: Check out my custom GetModuleHandle implementation that's harder to detect: https://github.com/AbdouRoumi/Custom-GetModuleHandle*
+
+## 2. Advanced Static Analysis
+
+Now we dive into the binary at the assembly level to understand the core functionality.
+
+### Main Function Identification
+
+I identified the main function through several indicators:
+
+- **Entry point behavior:** Calls `sub_140001fd7()` early (likely initialization)
+- **Variable setup:** Initializes buffer sizes (`var_40 = 0x150`)
+- **Core program logic:** Performs main operations including:
+  - Cryptographic function `sub_1400017d0()` with "UUUUUUUU" as input
+  - Process search for "explorer.exe" using `sub_1400019b5()`
+  - Process opening with `OpenProcess()`
+  - Process injection via `sub_140001ba9()`
+
+### Shellcode Storage Analysis
+
+In the main function, `var_40` appears to be a variable designated for shellcode storage. 
+
+**How I identified this:**
+Through experience developing malware samples, this pattern is common - we always need to create variables to store our shellcode. You can see a similar example in my repository: https://github.com/AbdouRoumi/Payload_Execution_Control/blob/master/Event_Payload_Execution_Control/Event.cpp
+
+### Decryption Method Analysis
+
+I discovered a decryption routine requiring 5 arguments:
+
+**Function Parameters:**
+- **arg1:** Key data (password/key bytes)
+- **arg2:** Key length  
+- **arg3:** Input data (ciphertext to decrypt)
+- **arg4:** Input data length
+- **arg5:** Output buffer (decrypted plaintext destination)
+
+**Key Discovery:**
+The decryption key is revealed to be **"UUUUUUUU"**
+
+**Encrypted Payload Location:**
+The encrypted payload (`enc_payload`) was located in the binary, but to see the decrypted result, we need dynamic analysis.
+
+## 3. Behavioral Analysis
+
+Using x64dbg for dynamic analysis, I set a breakpoint at the decryption function address `140001e2e` (identified from Binary Ninja).
+
+### Dynamic Decryption Analysis
+
+After executing the decryption function, I examined the memory dump to reveal the decrypted shellcode payload.
+
+**Result:** The shellcode is now visible in the dump, allowing us to understand the malware's true payload.
+
+## HTB Challenge Solutions
+
+Now let's solve the specific HTB Sherlock questions:
+
+### Task 1: SHA256 Hash
+**Question:** What is the SHA256 hash of func_pointer.exe?
+
+**Solution:** Using `sha256sum` command:
+```bash
+sha256sum func_pointer.exe
+```
+
+### Task 2: Compiler Identification  
+**Question:** What compiler is being used?
+
+**Solution:** Using strings analysis, we can identify the compiler from embedded metadata.
+
+### Task 3: Compilation Date
+**Question:** What is the compilation date?
+
+**Solution:** Found in VirusTotal Details → History section showing the compilation timestamp.
+
+### Task 4: ASLR Status
+**Question:** Is ASLR enabled? (True or False)
+
+**Solution:** Using objdump to check PE characteristics:
+```bash
+objdump -p func_pointer.exe | grep -i "characteristics"
+```
+
+**Analysis:**
+- DllCharacteristics = `0x100`
+- According to Microsoft PE format documentation:
+  - `0x0100` = NX_COMPAT (DEP enabled) ✅
+  - **Missing:** `0x0040` = DYNAMIC_BASE (ASLR **disabled**)
+
+**Answer:** False
+
+### Task 5: Image Base Address
+**Question:** What is the image base address?
+
+**Solution:** 
+```bash
+objdump -p func_pointer.exe | grep -i "base"
+```
+From our previous analysis: `0x140000000`
+
+### Task 6: Entry Point
+**Question:** What is the entry point?
+
+**Solution:**
+```bash
+objdump -p func_pointer.exe | grep -i "entry"
+```
+**Answer:** `0x1125`
+
+### Task 7: Encrypted Payload Bytes
+**Question:** What are the first 8 bytes of the encrypted payload being moved to allocated memory? (format: daffd563616c632e)
+
+**Solution:** From our advanced static analysis, we identified the encrypted payload location in the binary.
+
+### Task 8: Decryption Key
+**Question:** What is the key for decryption in hex?
+
+**Solution:** From our analysis, the key "UUUUUUUU" converted to hex format.
+
+### Tasks 9 & 10
+**Additional Challenge Questions:** Solved through continuation of the behavioral analysis and shellcode examination.
+
+## Key Takeaways
+
+This analysis demonstrates several important malware analysis concepts:
+
+1. **Multi-layered Analysis:** Combining static and dynamic techniques provides comprehensive understanding
+2. **Threat Intelligence:** Researching malware families helps contextualize findings
+3. **Dynamic Function Loading:** Many modern malware samples use GetModuleHandle for evasion
+4. **Encryption/Obfuscation:** Payload encryption is common - dynamic analysis reveals true functionality
+5. **Process Injection:** This sample demonstrates classic process injection techniques targeting explorer.exe
+
+## Tools Used
+
+- **VirusTotal** - Initial triage and intelligence
+- **Detect It Easy** - PE analysis and basic properties
+- **Binary Ninja** - Advanced static analysis and disassembly
+- **x64dbg** - Dynamic analysis and debugging
+- **objdump** - PE header analysis
+- **FLOSS/strings** - String extraction and analysis
+
+## Conclusion
+
+The Shelma trojan demonstrates typical modern malware characteristics: encrypted payloads, dynamic function resolution, and process injection capabilities. Through methodical static and dynamic analysis, we successfully unpacked its functionality and answered all HTB challenge questions.
+
+This type of systematic analysis approach is crucial for understanding malware behavior and developing effective defensive strategies.
+
+---
+
+*Remember: All malware analysis should be conducted in isolated, controlled environments. Always ensure proper authorization and follow responsible disclosure practices.*
+
+**Happy hunting! 🔍**
+
+---
+**Tags:** #HTB #Sherlock #MalwareAnalysis #ReverseEngineering #Trojan #Shelma #CTF
