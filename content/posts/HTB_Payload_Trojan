@@ -27,6 +27,7 @@ Let's dive into each section and uncover what this malware is really doing.
 ### VirusTotal Analysis
 
 First, I checked the malware's reputation on VirusTotal:
+![alt text](image.png)
 
 The sample shows a high detection score on VT with a threat label of **trojan from the Shelma family**. This immediately tells us we're dealing with a known malicious family.
 
